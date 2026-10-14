@@ -1,0 +1,13 @@
+.DS_Store
+
+# Xcode user state and build products
+xcuserdata/
+DerivedData/
+*.xcuserstate
+
+# Local build output
+build/
+
+# macOS metadata
+.Spotlight-V100
+.Trashes
