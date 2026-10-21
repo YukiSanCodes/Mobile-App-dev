@@ -19,7 +19,9 @@ class DetailViewController: UIViewController {
             messageLabel.text = [
                 announcement.title,
                 announcement.date,
-                "Category: \(announcement.category)"
+                "Category: \(announcement.category)",
+                "Location: \(announcement.location)",
+                "Priority: \(announcement.priority)"
             ].joined(separator: "\n")
         } else {
             title = "Campus Events"

@@ -19,7 +19,11 @@ class AnnouncementCell: UITableViewCell {
     func configure(with announcement: CampusAnnouncement) {
         titleLabel.text = announcement.title
         dateLabel.text = "\(announcement.category) • \(announcement.date)"
-        priorityLabel.text = "Campus Announcement"
+        if announcement.location.isEmpty && announcement.priority.isEmpty {
+            priorityLabel.text = nil
+        } else {
+            priorityLabel.text = "\(announcement.location) • \(announcement.priority)"
+        }
         categoryIconImageView.image = UIImage(systemName: "megaphone.fill")
         categoryIconImageView.tintColor = .systemBlue
         priorityLabel.textColor = .secondaryLabel

@@ -1,6 +1,6 @@
-# Campus Companion - MAD2 Exercises 1–4
+# Campus Companion - MAD2 Exercises 1–5
 
-This folder contains one completed Campus Companion app that combines the required work from Laboratory Exercises 1 through 4.
+This folder contains one completed Campus Companion app that combines the required work from Laboratory Exercises 1 through 5.
 
 ## Run it without Xcode
 
@@ -33,6 +33,9 @@ The native UIKit project is also included as `CampusCompanion.xcodeproj`. It was
 - Announcement-to-detail navigation while preserving the personalized Explore Campus flow.
 - UserDefaults persistence for welcome-screen preferences, including an in-app reset control.
 - Core Data persistence for seeded and user-created announcements, including add and swipe-to-delete behavior.
+- URLSession and Codable synchronization from the Exercise 5 announcements endpoint.
+- Refresh confirmation alert and server-driven replacement of the local announcement collection.
+- Location and Priority fields persisted in Core Data and displayed in the announcement list and detail view.
 - App icon, launch screen, shared scheme, browser preview, test scripts, and evidence images.
 
 ## Main files
@@ -45,6 +48,7 @@ The native UIKit project is also included as `CampusCompanion.xcodeproj`. It was
 | `CampusCompanion/CampusCompanion.xcdatamodeld` | Core Data model for persistent announcements |
 | `CampusCompanion/AnnouncementCell.swift` | Reusable custom cell and urgent-state reset/configuration |
 | `CampusCompanion/AnnouncementsViewController.swift` | Table data source and row-to-detail navigation |
+| `CampusCompanion/AnnouncementDTO.swift` | Codable type for the remote announcements response |
 | `WebPreview/` | Complete no-Xcode interactive alternative |
 | `Evidence/` | Output images for the three exercises |
 | `LAB_COMPLETION.md` | Requirement-by-requirement completion checklist |
@@ -56,7 +60,9 @@ The native UIKit project is also included as `CampusCompanion.xcodeproj`. It was
 - Confirmed all three Storyboard actions match Swift methods.
 - Confirmed both named segue identifiers match the Swift calls.
 - Confirmed the Core Data model contains the required announcement entity and attributes.
+- Confirmed the provided announcements endpoint response is compatible with `AnnouncementDTO`.
+- Compile-checked the native target successfully without launching the app.
 - Checked JavaScript syntax and HTML parsing.
 - Generated and visually inspected evidence at iPhone SE (375 × 667) and iPhone 15 Pro (393 × 852) sizes.
 
-The current environment does not include Apple's iOS SDK, so an actual UIKit compile or iOS Simulator run cannot be performed here. The source project remains structured for a later simulator run on macOS.
+The native target was compile-checked on macOS; the app was not launched in the simulator.

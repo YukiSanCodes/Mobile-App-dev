@@ -319,9 +319,14 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Campus Announcements" id="announcements-navigation-item">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="add-announcement-button">
+                        <barButtonItem key="leftBarButtonItem" systemItem="add" id="add-announcement-button">
                             <connections>
                                 <action selector="addAnnouncementTapped:" destination="announcements-controller" id="add-announcement-action"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="refresh-announcement-button">
+                            <connections>
+                                <action selector="refreshTapped:" destination="announcements-controller" id="refresh-announcement-action"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

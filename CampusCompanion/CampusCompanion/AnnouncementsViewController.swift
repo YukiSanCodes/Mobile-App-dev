@@ -1,5 +1,10 @@
 import UIKit
 import CoreData
+import Foundation
+
+private enum RemoteEndpoint {
+    static let announcements = URL(string: "https://raw.githubusercontent.com/vohn-dev/campus-companion-api/refs/heads/main/announcements.json")!
+}
 
 class AnnouncementsViewController: UITableViewController {
 
@@ -17,6 +22,113 @@ class AnnouncementsViewController: UITableViewController {
         tableView.estimatedRowHeight = 92
         seedInitialAnnouncementsIfNeeded()
         loadAnnouncements()
+
+        // Keep the refresh action connected even if the storyboard connection
+        // is lost when the project is opened on another Xcode version.
+        if let refreshButton = navigationItem.rightBarButtonItem {
+            refreshButton.target = self
+            refreshButton.action = #selector(refreshTapped(_:))
+        }
+    }
+
+    @IBAction @objc func refreshTapped(_ sender: UIBarButtonItem) {
+        sender.isEnabled = false
+        fetchAnnouncementsFromServer()
+    }
+
+    private func fetchAnnouncementsFromServer() {
+        var request = URLRequest(url: RemoteEndpoint.announcements)
+        request.httpMethod = "GET"
+        request.cachePolicy = .reloadIgnoringLocalCacheData
+        request.timeoutInterval = 20
+
+        let task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+            let finish = { [weak self] in
+                DispatchQueue.main.async {
+                    self?.navigationItem.rightBarButtonItem?.isEnabled = true
+                }
+            }
+
+            if let error {
+                print("Network error: \(error.localizedDescription)")
+                finish()
+                self?.showRefreshError(error.localizedDescription)
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse,
+                  (200...299).contains(httpResponse.statusCode) else {
+                print("Unexpected server response.")
+                finish()
+                self?.showRefreshError("The server returned an unexpected response.")
+                return
+            }
+            guard let data else {
+                finish()
+                self?.showRefreshError("The server returned no data.")
+                return
+            }
+
+            print("Reached network handler with \(data.count) bytes.")
+            if let rawJSON = String(data: data, encoding: .utf8) {
+                print(rawJSON)
+            }
+
+            do {
+                let decodedAnnouncements = try JSONDecoder().decode([AnnouncementDTO].self, from: data)
+                print("Decoded \(decodedAnnouncements.count) announcements.")
+                DispatchQueue.main.async {
+                    self?.replaceAnnouncements(with: decodedAnnouncements)
+                    self?.showNetworkConfirmationAlert(byteCount: data.count)
+                    self?.navigationItem.rightBarButtonItem?.isEnabled = true
+                }
+            } catch {
+                print("Decoding error: \(error)")
+                finish()
+                self?.showRefreshError("The server data could not be decoded.")
+            }
+        }
+        task.resume()
+    }
+
+    private func showRefreshError(_ message: String) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            let alert = UIAlertController(
+                title: "Refresh Failed",
+                message: message,
+                preferredStyle: .alert
+            )
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
+        }
+    }
+
+    private func replaceAnnouncements(with dtos: [AnnouncementDTO]) {
+        let existing = (try? context.fetch(CampusAnnouncement.fetchRequest())) ?? []
+        existing.forEach { context.delete($0) }
+
+        dtos.forEach { dto in
+            let announcement = CampusAnnouncement(context: context)
+            announcement.title = dto.title
+            announcement.date = dto.date
+            announcement.category = dto.category
+            announcement.location = dto.location ?? "Not provided"
+            announcement.priority = dto.priority ?? "Normal"
+        }
+
+        try? context.save()
+        loadAnnouncements()
+        tableView.reloadData()
+    }
+
+    private func showNetworkConfirmationAlert(byteCount: Int) {
+        let alert = UIAlertController(
+            title: "Server Reached",
+            message: "Received \(byteCount) bytes from the announcements endpoint.",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
     }
 
     private func seedInitialAnnouncementsIfNeeded() {
@@ -25,12 +137,9 @@ class AnnouncementsViewController: UITableViewController {
         guard existingCount == 0 else { return }
 
         let seedData = [
-            ("Enrollment Period Extended", "August 3, 2026", "Academics"),
-            ("Campus Wi-Fi Maintenance", "August 7, 2026", "Technology"),
-            ("Student Organization Fair", "August 12, 2026", "Student Life"),
-            ("Library Extended Hours", "August 15, 2026", "Facilities"),
-            ("Scholarship Applications Open", "August 20, 2026", "Financial Aid"),
-            ("Emergency Preparedness Drill", "August 25, 2026", "Safety")
+            ("Midterm Exam Schedule", "August 15, 2026", "Academic"),
+            ("Library Extended Hours", "August 20, 2026", "General"),
+            ("Council Election Results", "August 10, 2026", "Announcement")
         ]
 
         seedData.forEach { title, date, category in
@@ -38,6 +147,8 @@ class AnnouncementsViewController: UITableViewController {
             announcement.title = title
             announcement.date = date
             announcement.category = category
+            announcement.location = ""
+            announcement.priority = ""
         }
         try? context.save()
     }
@@ -71,6 +182,8 @@ class AnnouncementsViewController: UITableViewController {
                 from: Date(), dateStyle: .long, timeStyle: .none
             )
             newAnnouncement.category = categoryText
+            newAnnouncement.location = "Not provided"
+            newAnnouncement.priority = "Normal"
             try? self.context.save()
             self.loadAnnouncements()
         }

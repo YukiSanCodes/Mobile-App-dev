@@ -46,6 +46,18 @@
 - [x] Added new announcements through an alert and saved them to Core Data.
 - [x] Added swipe-to-delete with context deletion and save.
 
+## Exercise 5 - REST API Integration and Codable JSON Parsing
+
+- [x] Added a Refresh bar button item to the announcements navigation bar.
+- [x] Declared the provided announcements endpoint as a named constant.
+- [x] Added an asynchronous URLSession GET request with error, status, data, and resume handling.
+- [x] Added a separate Codable AnnouncementDTO network type.
+- [x] Logged the raw JSON response and decoded announcement count.
+- [x] Replaced the Core Data announcement collection with decoded server data without duplicates.
+- [x] Added the main-thread Server Reached confirmation alert.
+- [x] Added Location and Priority fields through DTO, Core Data, replacement, cell, and detail display logic.
+- [x] Kept Location and Priority decodable when the supplied endpoint omits those fields by using safe fallback values.
+
 ## Verification Summary
 
 | Check | Result |
@@ -55,9 +67,9 @@
 | Storyboard outlet-to-Swift matching | 13/13 passed |
 | Storyboard action-to-Swift matching | 3/3 passed |
 | Named segue matching | 2/2 passed |
-| Announcement records | 6 present |
+| Announcement records | Core Data seeded and API-ready |
 | Required announcement fields | 5/5 present |
 | Browser JavaScript syntax | Passed |
-| Responsive evidence inspection | Passed at 375 × 667 and 393 × 852 |
+| Native compile check | Passed for the iOS Simulator target |
 
 Native compilation requires Apple's iOS SDK on macOS. The included browser preview is the verified no-Xcode execution path for this deliverable.
