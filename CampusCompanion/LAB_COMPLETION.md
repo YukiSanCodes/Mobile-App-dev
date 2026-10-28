@@ -58,6 +58,16 @@
 - [x] Added Location and Priority fields through DTO, Core Data, replacement, cell, and detail display logic.
 - [x] Kept Location and Priority decodable when the supplied endpoint omits those fields by using safe fallback values.
 
+## Exercise 6 - Persistent Profile Photo and Campus Location
+
+- [x] Added the preferred portrait as a bundled default profile photo.
+- [x] Added a single-image `PHPickerViewController` flow and saved selected images in the app's Documents directory.
+- [x] Restored the saved image on launch and added a Remove Photo action that deletes it and displays a neutral system placeholder.
+- [x] Added the When In Use location usage description to `Info.plist`.
+- [x] Added a MapKit view with named Campus and Campus Library annotations.
+- [x] Requested location only after the location manager delegate is configured and handled authorization outcomes.
+- [x] Displayed the device's distance from the original campus coordinate and handled location errors.
+
 ## Verification Summary
 
 | Check | Result |
@@ -70,6 +80,7 @@
 | Announcement records | Core Data seeded and API-ready |
 | Required announcement fields | 5/5 present |
 | Browser JavaScript syntax | Passed |
-| Native compile check | Passed for the iOS Simulator target |
+| Native compile check | Passed for the iOS Simulator target, including Exercise 6 |
+| Simulator interaction | Not run in this session |
 
 Native compilation requires Apple's iOS SDK on macOS. The included browser preview is the verified no-Xcode execution path for this deliverable.

@@ -55,9 +55,9 @@
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="image-container">
                                                         <rect key="frame" x="0.0" y="85" width="345" height="150"/>
                                                         <subviews>
-                                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" image="11.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="campus-image">
+                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="person.crop.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="profile-image-view">
                                                                 <rect key="frame" x="97.666666666666686" y="0.6666666666666714" width="150" height="148.66666666666669"/>
-                                                                <color key="tintColor" red="0.164423802570629" green="0.5" blue="0.18516935836063322" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                <color key="tintColor" systemColor="systemBlueColor"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="150" id="campus-image-height"/>
                                                                     <constraint firstAttribute="width" constant="150" id="campus-image-width"/>
@@ -65,8 +65,8 @@
                                                             </imageView>
                                                         </subviews>
                                                         <constraints>
-                                                            <constraint firstItem="campus-image" firstAttribute="centerX" secondItem="image-container" secondAttribute="centerX" id="campus-image-center-x"/>
-                                                            <constraint firstItem="campus-image" firstAttribute="centerY" secondItem="image-container" secondAttribute="centerY" id="campus-image-center-y"/>
+                                                            <constraint firstItem="profile-image-view" firstAttribute="centerX" secondItem="image-container" secondAttribute="centerX" id="campus-image-center-x"/>
+                                                            <constraint firstItem="profile-image-view" firstAttribute="centerY" secondItem="image-container" secondAttribute="centerY" id="campus-image-center-y"/>
                                                             <constraint firstAttribute="height" constant="150" id="image-container-height"/>
                                                         </constraints>
                                                     </view>
@@ -77,6 +77,28 @@
                                                             <action selector="getStartedButtonTapped:" destination="welcome-controller" eventType="touchUpInside" id="get-started-action"/>
                                                         </connections>
                                                     </button>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="profile-photo-actions">
+                                                        <rect key="frame" x="0.0" y="413" width="345" height="36"/>
+                                                        <subviews>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="change-photo-button">
+                                                                <rect key="frame" x="0.0" y="3" width="166.5" height="30"/>
+                                                                <state key="normal" title="Change Photo"/>
+                                                                <connections>
+                                                                    <action selector="changePhotoTapped:" destination="welcome-controller" eventType="touchUpInside" id="change-photo-action"/>
+                                                                </connections>
+                                                            </button>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="remove-photo-button">
+                                                                <rect key="frame" x="178.5" y="3" width="166.5" height="30"/>
+                                                                <state key="normal" title="Remove Photo"/>
+                                                                <connections>
+                                                                    <action selector="removePhotoTapped:" destination="welcome-controller" eventType="touchUpInside" id="remove-photo-action"/>
+                                                                </connections>
+                                                            </button>
+                                                        </subviews>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="36" id="profile-actions-height"/>
+                                                        </constraints>
+                                                    </stackView>
                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter your name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="name-text-field">
                                                         <rect key="frame" x="0.0" y="297" width="345" height="34"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -212,6 +234,8 @@
                         <outlet property="guestStepper" destination="guest-stepper" id="outlet-guest-stepper"/>
                         <outlet property="nameTextField" destination="name-text-field" id="outlet-name"/>
                         <outlet property="notifySwitch" destination="notify-switch" id="outlet-notify"/>
+                        <outlet property="profileImageView" destination="profile-image-view" id="outlet-profile-image"/>
+                        <outlet property="removePhotoButton" destination="remove-photo-button" id="outlet-remove-photo"/>
                         <outlet property="roleSegmentedControl" destination="role-segmented-control" id="outlet-role"/>
                         <outlet property="subtitleLabel" destination="subtitle-label" id="outlet-subtitle"/>
                         <outlet property="titleLabel" destination="title-label" id="outlet-title"/>
@@ -234,17 +258,34 @@
                                 <rect key="frame" x="24" y="467.33333333333331" width="345" height="21.666666666666686"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                             </label>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="campus-map-view">
+                                <rect key="frame" x="24" y="520" width="345" height="260"/>
+                            </mapView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Allow location access to see your distance from campus." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" translatesAutoresizingMaskIntoConstraints="NO" id="distance-label">
+                                <rect key="frame" x="24" y="792" width="345" height="40"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" systemColor="secondaryLabelColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="detail-safe-area"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="message-label" firstAttribute="centerY" secondItem="detail-safe-area" secondAttribute="centerY" id="message-center-y"/>
+                            <constraint firstItem="message-label" firstAttribute="top" secondItem="detail-safe-area" secondAttribute="top" constant="24" id="message-top"/>
                             <constraint firstItem="message-label" firstAttribute="leading" secondItem="detail-safe-area" secondAttribute="leading" constant="24" id="message-leading"/>
                             <constraint firstItem="detail-safe-area" firstAttribute="trailing" secondItem="message-label" secondAttribute="trailing" constant="24" id="message-trailing"/>
+                            <constraint firstItem="campus-map-view" firstAttribute="top" secondItem="message-label" secondAttribute="bottom" constant="20" id="campus-map-top"/>
+                            <constraint firstItem="campus-map-view" firstAttribute="leading" secondItem="detail-safe-area" secondAttribute="leading" constant="24" id="campus-map-leading"/>
+                            <constraint firstItem="detail-safe-area" firstAttribute="trailing" secondItem="campus-map-view" secondAttribute="trailing" constant="24" id="campus-map-trailing"/>
+                            <constraint firstItem="campus-map-view" firstAttribute="height" constant="260" id="campus-map-height"/>
+                            <constraint firstItem="distance-label" firstAttribute="top" secondItem="campus-map-view" secondAttribute="bottom" constant="14" id="distance-label-top"/>
+                            <constraint firstItem="distance-label" firstAttribute="leading" secondItem="detail-safe-area" secondAttribute="leading" constant="24" id="distance-label-leading"/>
+                            <constraint firstItem="detail-safe-area" firstAttribute="trailing" secondItem="distance-label" secondAttribute="trailing" constant="24" id="distance-label-trailing"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Campus Events" id="detail-navigation-item"/>
                     <connections>
+                        <outlet property="campusMapView" destination="campus-map-view" id="outlet-campus-map"/>
+                        <outlet property="distanceLabel" destination="distance-label" id="outlet-distance-label"/>
                         <outlet property="messageLabel" destination="message-label" id="outlet-message"/>
                     </connections>
                 </viewController>
@@ -343,13 +384,16 @@
         <segue reference="show-detail-segue"/>
     </inferredMetricsTieBreakers>
     <resources>
-        <image name="11.circle" catalog="system" width="128" height="123"/>
+        <image name="person.crop.circle" catalog="system" width="128" height="123"/>
         <image name="megaphone.fill" catalog="system" width="128" height="112"/>
         <namedColor name="AccentColor">
             <color red="0.10999999940395355" green="0.41999998688697815" blue="0.81999999284744263" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="secondaryLabelColor">
             <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemBlueColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

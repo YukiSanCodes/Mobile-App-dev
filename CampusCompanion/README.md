@@ -1,6 +1,6 @@
-# Campus Companion - MAD2 Exercises 1–5
+# Campus Companion - MAD2 Exercises 1–6
 
-This folder contains one completed Campus Companion app that combines the required work from Laboratory Exercises 1 through 5.
+This folder contains one Campus Companion app that combines the work from Laboratory Exercises 1 through 6.
 
 ## Run it without Xcode
 
@@ -36,6 +36,8 @@ The native UIKit project is also included as `CampusCompanion.xcodeproj`. It was
 - URLSession and Codable synchronization from the Exercise 5 announcements endpoint.
 - Refresh confirmation alert and server-driven replacement of the local announcement collection.
 - Location and Priority fields persisted in Core Data and displayed in the announcement list and detail view.
+- A bundled profile portrait with a Change Photo picker, Documents-directory persistence, launch restore, and Remove Photo action.
+- A Campus Events map with Campus and Campus Library pins, When In Use location permission, and distance from the campus coordinate.
 - App icon, launch screen, shared scheme, browser preview, test scripts, and evidence images.
 
 ## Main files
@@ -49,6 +51,7 @@ The native UIKit project is also included as `CampusCompanion.xcodeproj`. It was
 | `CampusCompanion/AnnouncementCell.swift` | Reusable custom cell and urgent-state reset/configuration |
 | `CampusCompanion/AnnouncementsViewController.swift` | Table data source and row-to-detail navigation |
 | `CampusCompanion/AnnouncementDTO.swift` | Codable type for the remote announcements response |
+| `CampusCompanion/Assets.xcassets/ProfilePhoto.imageset/` | Bundled preferred portrait used as the initial saved profile photo |
 | `WebPreview/` | Complete no-Xcode interactive alternative |
 | `Evidence/` | Output images for the three exercises |
 | `LAB_COMPLETION.md` | Requirement-by-requirement completion checklist |
@@ -65,4 +68,4 @@ The native UIKit project is also included as `CampusCompanion.xcodeproj`. It was
 - Checked JavaScript syntax and HTML parsing.
 - Generated and visually inspected evidence at iPhone SE (375 × 667) and iPhone 15 Pro (393 × 852) sizes.
 
-The native target was compile-checked on macOS; the app was not launched in the simulator.
+The Exercise 6 native target builds successfully for the iOS Simulator. Run it in Simulator to interactively confirm photo selection and persistence, photo removal, the map pins, and location permission behavior.
